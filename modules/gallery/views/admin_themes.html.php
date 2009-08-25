@@ -32,7 +32,7 @@
     <div class="gBlock">
       <a href="<?= url::site("admin/themes/preview/site/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name)) ?>">
         <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>"
-             alt="<?= $info->name ?>" />
+             alt="<?= $info->name ?>" width="200px" height="133px"/>
         <h3> <?= $info->name ?> </h3>
         <p>
           <?= $info->description ?>
