@@ -15,9 +15,9 @@
 <div id="gSiteTheme">
   <h2> <?= t("Gallery theme") ?> </h2>
   <div class="gBlock gSelected">
-    <img src="<?= url::file("themes/{$site}/thumbnail.png") ?>"
+    <img src="<?= url::file("themes/{$site}/thumbnail.png") ?>" height="133px" width="200px"
          alt="<?= $themes[$site]->name ?>" />
-    <h3> <?= $themes[$site]->name ?> </h3>
+    <h3> <?= $themes[$site]->name ?></h3>
     <p>
       <?= $themes[$site]->description ?>
     </p>
@@ -31,8 +31,8 @@
     <? if ($id == $site) continue ?>
     <div class="gBlock">
       <a href="<?= url::site("admin/themes/preview/site/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name)) ?>">
-        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>"
-             alt="<?= $info->name ?>" width="200px" height="133px"/>
+        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>" height="133px" width="200px"
+             alt="<?= $info->name ?>"/>
         <h3> <?= $info->name ?> </h3>
         <p>
           <?= $info->description ?>
@@ -53,7 +53,7 @@
 <div id="gAdminTheme">
   <h2> <?= t("Admin theme") ?> </h2>
   <div class="gBlock gSelected">
-    <img src="<?= url::file("themes/{$admin}/thumbnail.png") ?>"
+    <img src="<?= url::file("themes/{$admin}/thumbnail.png") ?>"  height="133px" width="200px"
          alt="<?= $themes[$admin]->name ?>" />
     <h3> <?= $themes[$admin]->name ?> </h3>
     <p>
@@ -69,7 +69,7 @@
     <? if ($id == $admin) continue ?>
     <div class="gBlock">
       <a href="<?= url::site("admin/themes/preview/admin/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name)) ?>">
-        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>"
+        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>" height="133px" width="200px"
              alt="<?= $info->name ?>" />
         <h3> <?= $info->name ?> </h3>
         <p>
