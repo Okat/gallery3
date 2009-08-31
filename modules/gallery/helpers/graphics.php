@@ -206,15 +206,11 @@ class graphics_Core {
       // Image would get upscaled; do nothing
       copy($input_file, $output_file);
     } else {
-      try {
       Image::factory($input_file)
         ->resize($options["width"], $options["height"], $options["master"])
         ->quality(module::get_var("gallery", "image_quality"))
         ->sharpen(module::get_var("gallery", "image_sharpen"))
         ->save($output_file);
-      } catch (Exception $e) {
-        Kohana::log("error", $e->getMessage());
-      }
     }
 
     module::event("graphics_resize_completed", $input_file, $output_file, $options);
@@ -447,7 +443,7 @@ class graphics_Core {
     if (!module::get_var("gallery", "graphics_toolkit")) {
       site_status::warning(
         t("Graphics toolkit missing!  Please <a href=\"%url\">choose a toolkit</a>",
-          array("url" => url::site("admin/graphics"))),
+          array("url" => html::mark_safe(url::site("admin/graphics")))),
         "missing_graphics_toolkit");
     }
   }

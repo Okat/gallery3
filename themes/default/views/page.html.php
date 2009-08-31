@@ -10,14 +10,14 @@
       <? else: ?>
         <? if ($theme->item()): ?>
           <? if ($theme->item()->is_album()): ?>
-          <?= t("Browse Album :: %album_title", array("album_title" => p::clean($theme->item()->title))) ?>
+          <?= t("Browse Album :: %album_title", array("album_title" => $theme->item()->title)) ?>
           <? elseif ($theme->item()->is_photo()): ?>
-          <?= t("Photo :: %photo_title", array("photo_title" => p::clean($theme->item()->title))) ?>
+          <?= t("Photo :: %photo_title", array("photo_title" => $theme->item()->title)) ?>
           <? else: ?>
-          <?= t("Movie :: %movie_title", array("movie_title" => p::clean($theme->item()->title))) ?>
+          <?= t("Movie :: %movie_title", array("movie_title" => $theme->item()->title)) ?>
           <? endif ?>
         <? elseif ($theme->tag()): ?>
-          <?= t("Browse Tag :: %tag_title", array("tag_title" => p::clean($theme->tag()->name))) ?>
+          <?= t("Browse Tag :: %tag_title", array("tag_title" => $theme->tag()->name)) ?>
         <? else: /* Not an item, not a tag, no page_title specified.  Help! */ ?>
           <?= t("Gallery") ?>
         <? endif ?>
@@ -51,7 +51,7 @@
     <?= $theme->script("gallery.common.js") ?>
     <? /* MSG_CANCEL is required by gallery.dialog.js */ ?>
     <script type="text/javascript">
-    var MSG_CANCEL = "<?= t('Cancel') ?>";
+    var MSG_CANCEL = <?= t('Cancel')->for_js() ?>;
     </script>
     <?= $theme->script("gallery.ajax.js") ?>
     <?= $theme->script("gallery.dialog.js") ?>
@@ -76,7 +76,33 @@
     <div id="doc4" class="yui-t5 gView">
       <?= $theme->site_status() ?>
       <div id="gHeader">
-        <?= new View("header.html") ?>
+        <div id="gBanner">
+          <?= $theme->header_top() ?>
+          <? if ($header_text = module::get_var("gallery", "header_text")): ?>
+          <?= $header_text ?>
+          <? else: ?>
+          <a id="gLogo" href="<?= url::site("albums/1") ?>" title="<?= t("go back to the Gallery home") ?>">
+            <img width="107" height="48" alt="<?= t("Gallery logo: Your photos on your web site") ?>" src="<?= $theme->url("images/logo.png") ?>" />
+          </a>
+          <? endif ?>
+          <div id="gSiteMenu">
+          <?= $theme->site_menu() ?>
+          </div>
+          <?= $theme->header_bottom() ?>
+        </div>
+
+        <? if (!empty($parents)): ?>
+        <ul class="gBreadcrumbs">
+          <? foreach ($parents as $parent): ?>
+          <li>
+            <a href="<?= url::site("albums/{$parent->id}?show={$theme->item()->id}") ?>">
+              <?= html::purify($parent->title) ?>
+            </a>
+          </li>
+          <? endforeach ?>
+          <li class="active"><?= html::purify($theme->item()->title) ?></li>
+        </ul>
+        <? endif ?>
       </div>
       <div id="bd">
         <div id="yui-main">
@@ -94,7 +120,16 @@
         </div>
       </div>
       <div id="gFooter">
-        <?= new View("footer.html") ?>
+        <?= $theme->footer() ?>
+        <? if ($footer_text = module::get_var("gallery", "footer_text")): ?>
+        <?= $footer_text ?>
+        <? endif ?>
+
+        <? if (module::get_var("gallery", "show_credits")): ?>
+        <ul id="gCredits">
+          <?= $theme->credits() ?>
+        </ul>
+        <? endif ?>
       </div>
     </div>
     <?= $theme->page_bottom() ?>
