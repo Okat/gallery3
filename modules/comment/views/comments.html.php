@@ -8,7 +8,7 @@
 <? if (!$comments->count()): ?>
 <p id="gNoCommentsYet">
   <?= t("No comments yet. Be the first to <a %attrs>comment</a>!",
-      array("attrs" => "href=\"#add_comment_form\" class=\"showCommentForm\"")) ?>
+        array("attrs" => html::mark_clean("href=\"#add_comment_form\" class=\"showCommentForm\""))) ?>
 </p>
 <? endif ?>
 <ul>
@@ -18,7 +18,7 @@
       <a href="#">
         <img src="<?= $comment->author()->avatar_url(40, $theme->url("images/avatar.jpg", true)) ?>"
              class="gAvatar"
-             alt="<?= html::clean($comment->author_name()) ?>"
+             alt="<?= html::clean_attribute($comment->author_name()) ?>"
              width="40"
              height="40" />
       </a>

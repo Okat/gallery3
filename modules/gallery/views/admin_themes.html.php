@@ -15,9 +15,9 @@
 <div id="gSiteTheme">
   <h2> <?= t("Gallery theme") ?> </h2>
   <div class="gBlock gSelected">
-    <img src="<?= url::file("themes/{$site}/thumbnail.png") ?>" height="133px" width="200px"
-         alt="<?= $themes[$site]->name ?>" />
-    <h3> <?= $themes[$site]->name ?></h3>
+    <img src="<?= url::file("themes/{$site}/thumbnail.png") ?>"
+         alt="<?= html::clean_attribute($themes[$site]->name) ?>" />
+    <h3> <?= $themes[$site]->name ?> </h3>
     <p>
       <?= $themes[$site]->description ?>
     </p>
@@ -30,9 +30,9 @@
     <? if (!$info->site) continue ?>
     <? if ($id == $site) continue ?>
     <div class="gBlock">
-      <a href="<?= url::site("admin/themes/preview/site/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name)) ?>">
-        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>" height="133px" width="200px"
-             alt="<?= $info->name ?>"/>
+      <a href="<?= url::site("admin/themes/preview/site/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name))->for_html_attr() ?>">
+        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>"
+             alt="<?= html::clean_attribute($info->name) ?>" />
         <h3> <?= $info->name ?> </h3>
         <p>
           <?= $info->description ?>
@@ -53,8 +53,8 @@
 <div id="gAdminTheme">
   <h2> <?= t("Admin theme") ?> </h2>
   <div class="gBlock gSelected">
-    <img src="<?= url::file("themes/{$admin}/thumbnail.png") ?>"  height="133px" width="200px"
-         alt="<?= $themes[$admin]->name ?>" />
+    <img src="<?= url::file("themes/{$admin}/thumbnail.png") ?>"
+         alt="<?= html::clean_attribute($themes[$admin]->name) ?>" />
     <h3> <?= $themes[$admin]->name ?> </h3>
     <p>
       <?= $themes[$admin]->description ?>
@@ -68,9 +68,9 @@
     <? if (!$info->admin) continue ?>
     <? if ($id == $admin) continue ?>
     <div class="gBlock">
-      <a href="<?= url::site("admin/themes/preview/admin/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name)) ?>">
-        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>" height="133px" width="200px"
-             alt="<?= $info->name ?>" />
+      <a href="<?= url::site("admin/themes/preview/admin/$id") ?>" class="gDialogLink" title="<?= t("Theme Preview: %theme_name", array("theme_name" => $info->name))->for_html_attr() ?>">
+        <img src="<?= url::file("themes/{$id}/thumbnail.png") ?>"
+             alt="<?= html::clean_attribute($info->name) ?>" />
         <h3> <?= $info->name ?> </h3>
         <p>
           <?= $info->description ?>

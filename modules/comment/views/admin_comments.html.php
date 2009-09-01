@@ -1,7 +1,7 @@
 <?php defined("SYSPATH") or die("No direct script access.") ?>
 <script type="text/javascript">
   var set_state_url =
-    "<?= url::site("admin/comments/set_state/__ID__/__STATE__?csrf=$csrf") ?>";
+    <?= html::js_string(url::site("admin/comments/set_state/__ID__/__STATE__?csrf=$csrf")) ?>;
   function set_state(state, id) {
     $.get(set_state_url.replace("__STATE__", state).replace("__ID__", id),
           {},
@@ -12,7 +12,7 @@
   }
 
   var delete_url =
-    "<?= url::site("admin/comments/delete/__ID__?csrf=$csrf") ?>";
+    <?= html::js_string(url::site("admin/comments/delete/__ID__?csrf=$csrf")) ?>;
 
   function del(id) {
     $.get(delete_url.replace("__ID__", id),
@@ -24,7 +24,7 @@
   }
 
   function update_menu() {
-    $.get("<?= url::site("admin/comments/menu_labels") ?>", {},
+    $.get(<?= html::js_string(url::site("admin/comments/menu_labels")) ?>, {},
           function(data) {
             for (var i = 0; i < data.length; i++) {
               $("#gAdminCommentsMenu li:eq(" + i + ") a").html(data[i]);
@@ -122,7 +122,7 @@
             <a href="<?= $item->url() ?>">
               <? if ($item->has_thumb()): ?>
               <img src="<?= $item->thumb_url() ?>"
-                 alt="<?= html::purify($item->title) ?>"
+                 alt="<?= html::purify($item->title)->for_html_attr() ?>"
                  <?= photo::img_dimensions($item->thumb_width, $item->thumb_height, 75) ?>
               />
               <? else: ?>

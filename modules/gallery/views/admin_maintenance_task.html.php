@@ -28,7 +28,7 @@
 
   update = function() {
     $.ajax({
-      url: "<?= url::site("admin/maintenance/run/$task->id?csrf=$csrf") ?>",
+      url: <?= html::js_string(url::site("admin/maintenance/run/$task->id?csrf=$csrf")) ?>,
       dataType: "json",
       success: function(data) {
         target_value = data.task.percent_complete;
@@ -57,7 +57,7 @@
   <div id="gStatus">
     <?= t("Starting up...") ?>
   </div>
-  <div>
+  <div class="txtright">
     <button id="gPauseButton" class="ui-state-default ui-corner-all" onclick="dismiss()"><?= t("Pause") ?></button>
     <button id="gDoneButton" class="ui-state-default ui-corner-all" style="display: none" onclick="dismiss()"><?= t("Close") ?></button>
   </div>
