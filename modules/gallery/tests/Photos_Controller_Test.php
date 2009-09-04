@@ -33,8 +33,8 @@ class Photos_Controller_Test extends Unit_Test_Case {
   public function change_photo_test() {
     $controller = new Photos_Controller();
     $root = ORM::factory("item", 1);
-    $this->_photo = photo::create($root, MODPATH . "gallery/tests/test.jpg", "test.jpeg", "test",
-                                  "test");
+    $this->_photo = photo::create(
+      $root, MODPATH . "gallery/tests/test.jpg", "test.jpeg", "test", "test");
     $orig_name = $this->_photo->name;
 
     $_POST["filename"] = "test.jpeg";
@@ -50,8 +50,7 @@ class Photos_Controller_Test extends Unit_Test_Case {
     ob_end_clean();
 
     $this->assert_equal(
-      json_encode(array("result" => "success",
-                        "location" => "http://./index.php/test.jpeg")),
+      json_encode(array("result" => "success")),
       $results);
     $this->assert_equal("new title", $this->_photo->title);
     $this->assert_equal("new description", $this->_photo->description);
@@ -63,7 +62,8 @@ class Photos_Controller_Test extends Unit_Test_Case {
   public function change_photo_no_csrf_fails_test() {
     $controller = new Photos_Controller();
     $root = ORM::factory("item", 1);
-    $this->_photo = photo::create($root, MODPATH . "gallery/tests/test.jpg", "test", "test", "test");
+    $this->_photo = photo::create(
+      $root, MODPATH . "gallery/tests/test.jpg", "test.jpg", "test", "test");
     $_POST["name"] = "new name";
     $_POST["title"] = "new title";
     $_POST["description"] = "new description";

@@ -24,15 +24,11 @@
 class SafeString_Core {
   private $_raw_string;
   protected $_is_safe_html = false;
-  protected $_is_purified_html = false;
-
-  private static $_purifier = null;
 
   /** Constructor */
   function __construct($string) {
     if ($string instanceof SafeString) {
       $this->_is_safe_html = $string->_is_safe_html;
-      $this->_is_purified_html = $string->_is_purified_html;
       $string = $string->unescaped();
     }
     $this->_raw_string = (string) $string;
@@ -51,10 +47,13 @@ class SafeString_Core {
    */
   static function purify($string) {
     if ($string instanceof SafeString) {
-      $string = $string->unescaped();
+      if ($string->_is_safe_html) {
+        return $string;
+      } else {
+        $string = $string->unescaped();
+      }
     }
     $safe_string = self::of_safe_html(self::_purify_for_html($string));
-    $safe_string->_is_purified_html = true;
     return $safe_string;
   }
 
@@ -83,7 +82,7 @@ class SafeString_Core {
    * Safe for use in HTML.
    *
    * Example:<pre>
-   *   <div><?= $php_var ?> 
+   *   <div><?= $php_var ?>
    * </pre>
    * @return the string escaped for use in HTML.
    */
@@ -128,16 +127,12 @@ class SafeString_Core {
    * Safe for use HTML (purified HTML)
    *
    * Example:<pre>
-   *   <div><?= $php_var->purified_html() ?> 
+   *   <div><?= $php_var->purified_html() ?>
    * </pre>
    * @return the string escaped for use in HTML.
    */
   function purified_html() {
-    if ($this->_is_purified_html) {
-      return $this;
-    } else {
-      return self::purify($this);
-    }
+    return self::purify($this);
   }
 
   /**
@@ -147,23 +142,21 @@ class SafeString_Core {
     return $this->_raw_string;
   }
 
-  // Escapes special HTML chars ("<", ">", "&", etc.) to HTML entities.
+  /**
+   * Escape special HTML chars ("<", ">", "&", etc.) to HTML entities.
+   */
   private static function _escape_for_html($dirty_html) {
     return html::specialchars($dirty_html);
   }
 
-  // Purifies the string, removing any potentially malicious or unsafe HTML / JavaScript.
+  /**
+   * Purify the string, removing any potentially malicious or unsafe HTML / JavaScript.
+   */
   private static function _purify_for_html($dirty_html) {
-    if (empty(self::$_purifier)) {
-      require_once(dirname(__file__) . "/../lib/HTMLPurifier/HTMLPurifier.auto.php");
-      $config = HTMLPurifier_Config::createDefault();
-      foreach (Kohana::config('purifier') as $category => $key_value) {
-        foreach ($key_value as $key => $value) {
-          $config->set("$category.$key", $value);
-        }
-      }
-      self::$_purifier = new HTMLPurifier($config);
+    if (method_exists("purifier", "purify")) {
+      return purifier::purify($dirty_html);
+    } else {
+      return self::_escape_for_html($dirty_html);
     }
-    return self::$_purifier->purify($dirty_html);
   }
 }

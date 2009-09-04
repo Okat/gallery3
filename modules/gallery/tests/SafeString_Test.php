@@ -91,7 +91,25 @@ class SafeString_Test extends Unit_Test_Case {
 
   public function purify_test() {
     $safe_string = SafeString::purify("hello <p  >world</p>");
-    $this->assert_equal("hello <p>world</p>", $safe_string);
+    $expected = method_exists("purifier", "purify")
+      ? "hello <p>world</p>"
+      : "hello &lt;p  &gt;world&lt;/p&gt;";
+    $this->assert_equal($expected, $safe_string);
+  }
+
+  public function purify_twice_test() {
+    $safe_string = SafeString::purify("hello <p  >world</p>");
+    $safe_string_2 = SafeString::purify($safe_string);
+    $expected = method_exists("purifier", "purify")
+      ? "hello <p>world</p>"
+      : "hello &lt;p  &gt;world&lt;/p&gt;";
+    $this->assert_equal($expected, $safe_string_2);
+  }
+
+  public function purify_safe_html_test() {
+    $safe_string = SafeString::of_safe_html("hello <p  >world</p>");
+    $actual = SafeString::purify($safe_string);
+    $this->assert_equal("hello <p  >world</p>", $actual);
   }
 
   public function of_fluid_api_test() {
